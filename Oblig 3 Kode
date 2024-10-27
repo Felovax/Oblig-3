@@ -1,0 +1,220 @@
+# Oblig 3
+# Oppgave 1A 
+# bruk av my_str_len
+def my_str_len(lst):
+    if not lst: # Dette er for å se om listen er tom
+        return []
+    else:
+        # Ser at det første elementet er en string
+        return [len(lst[0])] + my_str_len(lst[1:])
+    
+# Eksempel på bruk
+lst = ["Matias", "Erica", "Andreas", "Olav"]
+result = my_str_len(lst)
+print(result) # Output [6, 5, 7, 4]
+
+
+# Bruk av funksjonen my_max
+lst = [4, 6, 3, 9, 7] # Definerer listen
+def my_max(lst):
+    if not lst: # Dette er for å se om listen er tom
+        return None
+    max_value = lst[0]
+    for num in lst:
+        if num > max_value:
+            max_value = num
+    return max_value
+print (my_max(lst)) # Output 9
+
+
+# Oppgave 1B
+#Definere en student-klasse
+class student:
+ def __init__(self, name, student_id):
+     self.name = name
+     self.student_id = student_id
+
+#Definere en gruppe-klasse
+class group:
+ def __init__(self,group_name,students):
+    self.group_name = group_name
+    self.students = students
+
+# Funksjon for å finne hvilken gruppe en student tilhører
+# Kontrakt: (int, list[Group]) -> str
+# Hensikt: Finn hvilken gruppe en student tilhører basert på studentens ID.
+# Input: student_id (int) - ID-en til studenten.
+# groups (list[Group]) - En liste med grupper.
+# Output: En streng med gruppenavnet som studenten tilhører, eller "Studenten ble ikke funnet i noen gruppe".
+def find_student_group(student_id, groups):
+    for group in groups:
+        for student in group.students:
+            if student.student_id == student_id:
+                return group.group_name
+    return "Studenten ble ikke funnet i noen gruppe"
+
+# Eksempeldata
+# Oppretter Student- og Group-objekter for testing
+student1 = student("Alice", 1)
+student2 = student("Bob", 2)
+student3 = student("Charlie", 3)
+student4 = student("David", 4)
+
+group1 = group("Gruppe A", [student1, student2])
+group2 = group("Gruppe B", [student3, student4])
+
+groups = [group1, group2]
+
+# Eksempelbruk
+# Kontrakt: print() (Any) -> None
+# Hensikt: Skriver ut resultatene av funksjonen til konsollen.
+student_id_to_find = 2
+print(find_student_group(student_id_to_find, groups))  # Utdata bør være "Gruppe A"
+
+# Kontrakt: str() (Any) -> str
+# Hensikt: Konverterer objekter til strengrepresentasjon.
+
+
+# Oppgave 1C
+# Kontrakt: moon_weight(earth_weight: float) -> float
+# Hensikt: Beregn vekt på månen basert på vekt på jorden.
+def moon_weight(earth_weight: float) -> float:
+    """Compute weight on the moon from weight on earth."""
+    return earth_weight * (1 / 6)
+
+# Eksempelbruk
+print(moon_weight(180))  # Erstatt 180 med hvilken som helst vekt du vil konvertere
+
+# Oppgaver fra kapittel 9.1.6.1 Filtre, Maps, og Venner
+
+# Kontrakt: list(map(lambda x: str, numbers: list[int])) -> list[str]
+# Hensikt: Konverter en liste med tall til en liste med strenger "pos", "neg", "null", basert på fortegnet til hvert tall.
+numbers = [-5, 0, 12, -3, 7]
+number_signs = list(map(lambda x: "pos" if x > 0 else "neg" if x < 0 else "null", numbers))
+print(number_signs)  # Utdata: ['neg', 'null', 'pos', 'neg', 'pos']
+
+# Kontrakt: any(map(lambda x: bool, words: list[str])) -> bool
+# Hensikt: Sjekk om lengden til noen streng i listen er lik 5.
+words = ["apple", "banana", "pear", "grape"]
+any_length_five = any(map(lambda x: len(x) == 5, words))
+print(any_length_five)  # Utdata: TrueS
+
+# Kontrakt: list(filter(lambda x: bool, numbers: list[int])) -> list[int]
+# Hensikt: Produser en liste med partall mellom 10 og 20 fra den gitte listen.
+numbers = [5, 10, 12, 15, 18, 20, 25]
+even_between_10_and_20 = list(filter(lambda x: 10 <= x <= 20 and x % 2 == 0, numbers))
+print(even_between_10_and_20)  # Utdata: [10, 12, 18, 20]
+
+# Oppgaver fra kapittel 9.1.8.3 Bruk av for-løkker i funksjoner som produserer lister
+
+# Kontrakt: all_z_words(wordlist: list[str]) -> list[str]
+# Hensikt: Produser en liste med ord fra inputen som inneholder 'z'.
+def all_z_words(wordlist: list) -> list:
+    """Produce list of words from the input that contain 'z'."""
+    zlist = []  # Start med en tom liste
+    for wd in wordlist:
+        if "z" in wd:
+            zlist = [wd] + zlist
+    return zlist
+
+# Eksempelbruk og tester for all_z_words
+words = ["zebra", "apple", "pizza", "grape", "fizz"]
+print(all_z_words(words))  # Utdata: ['fizz', 'pizza', 'zebra']
+
+# Andre versjon av all_z_words ved bruk av filter
+# Kontrakt: all_z_words_filter(wordlist: list[str]) -> list[str]
+# Hensikt: Produser en liste med ord fra inputen som inneholder 'z' ved bruk av filter.
+def all_z_words_filter(wordlist: list) -> list:
+    """Produce list of words from the input that contain 'z' using filter."""
+    return list(filter(lambda wd: "z" in wd, wordlist))
+
+# Eksempelbruk og tester for all_z_words_filter
+print(all_z_words_filter(words))  # Utdata: ['zebra', 'pizza', 'fizz']
+
+# Observasjoner
+# Den første versjonen bruker en for-løkke og konstruerer eksplisitt den resulterende listen.
+# Den andre versjonen bruker filter-funksjonen, noe som gjør den mer konsis og lesbar.
+# Begge versjoner produserer samme utdata, men implementasjonen basert på filter er mer Python-aktig.
+
+# Oppgaver fra kapittel 9.2.2 Søking gjennom verdiene i en ordbok
+
+# Lag en ordbok som kartlegger navn på klasserom eller møterom til antall seter de har.
+# Kontrakt: room_dict: dict[str, int]
+room_dict = {
+    "Room A": 30,
+    "Room B": 50,
+    "Room C": 75,
+    "Room D": 100,
+    "Room E": 120
+}
+
+# Sjekk hvor mange seter det er i et spesifikt rom
+# Kontrakt: room_dict_lookup(room_dict: dict[str, int], room_name: str) -> int
+room_name = "Room C"
+print(f"{room_name} has {room_dict[room_name]} seats.")  # Utdata: Room C har 75 seter.
+
+# Endre kapasiteten til et spesifikt rom ved å legge til 10 seter mer enn det opprinnelig hadde
+# Kontrakt: room_dict_modify(room_dict: dict[str, int], room_name: str, increment: int) -> None
+room_dict[room_name] += 10
+print(f"{room_name} now has {room_dict[room_name]} seats.")  # Utdata: Room C har nå 85 seter.
+
+# Finn alle rom som har plass til minst 50 studenter
+# Kontrakt: find_rooms_with_capacity(room_dict: dict[str, int], capacity: int) -> list[str]
+rooms_with_at_least_50 = [room for room, seats in room_dict.items() if seats >= 50]
+print(f"Rooms that can seat at least 50 students: {rooms_with_at_least_50}")  # Utdata: ['Room B', 'Room C', 'Room D', 'Room E']
+
+import pandas as pd
+
+kgdata = pd.read_excel("ssb-barnehager-2015-2023-alder-1-2-aar.xlsm", sheet_name="KOSandel120000",
+                       header=3,
+                       names=['kom','y15','y16','y17','y18','y19','y20','y21','y22','y23'],
+                       na_values=['.', '..'])
+
+# Vasker data
+for coln in ['y15', 'y16', 'y17', 'y18', 'y19', 'y20', 'y21', 'y22', 'y23']:
+    mask_over_100 = (kgdata[coln] > 100)  # Kan bli et typeproblem?
+    kgdata.loc[mask_over_100, coln] = 100.0
+kgdata.loc[724:779, 'kom'] = None
+
+# Filtrer ut bare navnet på kommunen fra "kom"
+def extract_name(x):
+    try:
+        return x.split(" ")[1] if len(x.split(" ")) > 1 else ""
+    except:
+        return ""
+kgdata["kom"] = kgdata['kom'].apply(extract_name)
+
+# Fjerne ikke-relevante felt
+kgdata_no_meta = kgdata.drop(kgdata.index[724:])
+
+# Rensede data
+renset_kb = kgdata_no_meta
+print(renset_kb)
+
+#Oppgave 2A
+# Finne maksimal prosentverdi for kolonnen 'y23' (2023)
+maks_prosent = kgdata['y23'].max()
+
+# Filtrer ut kommuner med denne prosentverdien
+kommuner_med_maks = kgdata[kgdata['y23'] == maks_prosent]
+
+# Avrund prosentverdien til én desimal
+kommuner_med_maks['y23'] = kommuner_med_maks['y23'].round(1)
+
+# Skriv ut resultatene
+print("Kommuner med høyeste prosentandel barn i barnehagen i 2023:")
+print(kommuner_med_maks[['kom', 'y23']])
+
+#Oppgave 2B
+# Finne minimumsverdi i kolonnen 'y23' (2023)
+min_prosent = kgdata['y23'].min()
+
+# Filtrer ut kommuner med denne prosentverdien
+kommuner_med_min = kgdata[kgdata['y23'] == min_prosent]
+
+# Avrund prosentverdien til én desimal
+kommuner_med_min['y23'] = kommuner_med_min['y23'].round(1)
+
+# Skriv ut resultatene
+print("Kommuner med laveste prosentandel barn i barnehagen i 2023:")
+print(kommuner_med_min[['kom', 'y23']])
